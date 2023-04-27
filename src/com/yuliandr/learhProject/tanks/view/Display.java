@@ -2,6 +2,7 @@ package com.yuliandr.learhProject.tanks.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.Arrays;
@@ -12,14 +13,15 @@ public abstract class Display {
     private static JFrame window;
     private static Canvas content;
     private static BufferedImage buffer;
-    private static int[] bufferData;//buffer content, array with rgb
+    private static int[] bufferData;//buffer content, array with rgb values
     private static Graphics bufferGraphics;
     private static int _clearColor;
+    private static BufferStrategy bufferStrategy;
 //temp start
     private static  float delta = 0;
 
 //temp end
-    public static void create(int width, int height, String title, int clearColor) {
+    public static void create(int width, int height, String title, int clearColor, int numBuffers) {
         if (created) {
             return;
         }
@@ -41,6 +43,9 @@ public abstract class Display {
         bufferData = ((DataBufferInt)buffer.getRaster().getDataBuffer()).getData();
         bufferGraphics = buffer.getGraphics();
 
+        content.createBufferStrategy(numBuffers);
+        bufferStrategy = content.getBufferStrategy();
+
         created = true;
     }
 
@@ -54,8 +59,9 @@ public abstract class Display {
 
     }
     public static void swapBuffers(){
-       Graphics gr = content.getGraphics();
+       Graphics gr = bufferStrategy.getDrawGraphics();
        gr.drawImage(buffer,0,0,null);
+       bufferStrategy.show();
     }
 
 
