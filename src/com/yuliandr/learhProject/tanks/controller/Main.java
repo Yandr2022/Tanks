@@ -13,7 +13,7 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Display.clear();
-                Display.render();
+//                Display.render();
                 Display.swapBuffers();
 
             }
